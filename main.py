@@ -1,5 +1,6 @@
 import pygame
 from constants import *
+from player import *
 
 def main():
   pygame.init()
@@ -18,6 +19,11 @@ def main():
       if event.type == pygame.QUIT:
           return
     screen.fill("black")
+
+    # Draw Player
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
+    player.draw(screen)
+
     pygame.display.flip()
 
     dt = timeclock.tick(60) / 1000
