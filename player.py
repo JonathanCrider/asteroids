@@ -39,6 +39,7 @@ class Player(CircleShape):
       self.move(dt * -1)
 
     # Movement wrapping when crossing screen bounds
+    # TODO: account for direction
     [x, y] = self.position
     if x < 0:
       self.position = pygame.Vector2(SCREEN_WIDTH, y)
