@@ -10,6 +10,7 @@ def main():
 
   # Setup
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
   timeclock = pygame.time.Clock()
   dt = 0
 
@@ -21,9 +22,8 @@ def main():
     screen.fill("black")
 
     # Draw Player
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
-    player.draw(screen)
     player.update(dt)
+    player.draw(screen)
 
     pygame.display.flip()
 
