@@ -23,6 +23,7 @@ def main():
     # Draw Player
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
     player.draw(screen)
+    player.update(dt)
 
     pygame.display.flip()
 
