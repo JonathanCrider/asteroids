@@ -1,4 +1,6 @@
 import pygame
+import pygame.freetype
+import sys
 from constants import *
 from player import *
 from asteroid import Asteroid
@@ -26,7 +28,7 @@ def main():
   AsteroidField.containers = (updatable)
 
   # Entities
-  Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
+  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
   AsteroidField()
 
   # Game Loop
@@ -38,12 +40,34 @@ def main():
 
     for asset in updatable:
       asset.update(dt)
+    for asteroid in asteroids:
+      if asteroid.collision(player):
+        game_over(screen)
     for asset in drawable:
       asset.draw(screen)
 
     pygame.display.flip()
 
     dt = timeclock.tick(60) / 1000
+
+
+# HELPER FUNCTIONS
+
+def make_font(text):
+  font = pygame.freetype.Font(None, size=100)
+  text_rect = font.get_rect(text)
+  text_x = SCREEN_WIDTH/2 - text_rect.width/2
+  text_y = SCREEN_HEIGHT/2 - text_rect.height/2
+  return font, (text_x, text_y)
+
+
+def game_over(screen):
+  text = "Game over!"
+  font, coords = make_font(text)
+  font.render_to(screen, coords, text, fgcolor="white", bgcolor="black")
+  pygame.display.flip()
+  pygame.time.wait(3000)
+  sys.exit()
 
 
 if __name__ == "__main__":
