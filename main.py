@@ -6,6 +6,7 @@ from player import *
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 
+
 def main():
   pygame.init()
   print("Starting asteroids!")
@@ -63,6 +64,7 @@ def main():
 
 
 # HELPER FUNCTIONS
+
 
 def make_font(text):
   font = pygame.freetype.Font(None, size=100)
