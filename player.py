@@ -1,6 +1,7 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, SCREEN_HEIGHT, SCREEN_WIDTH
+from shots import Shot
+from constants import *
 
 class Player(CircleShape):
   def __init__(self, x, y):
@@ -9,8 +10,8 @@ class Player(CircleShape):
 
 
   def triangle(self):
-    forward = pygame.Vector2(0, 1).rotate(self.rotation)
-    right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+    forward = pygame.Vector2(0, -1).rotate(self.rotation)
+    right = pygame.Vector2(0, -1).rotate(self.rotation + 90) * self.radius / 1.5
     a = self.position + forward * self.radius
     b = self.position - forward * self.radius - right
     c = self.position - forward * self.radius + right
@@ -37,6 +38,8 @@ class Player(CircleShape):
       self.move(dt)
     if keys[pygame.K_s]:
       self.move(dt * -1)
+    if keys[pygame.K_SPACE]:
+      self.shoot()
 
     # Movement wrapping when crossing screen bounds
     # TODO: account for direction
@@ -52,5 +55,13 @@ class Player(CircleShape):
 
   
   def move(self, dt):
-    forward = pygame.Vector2(0, 1).rotate(self.rotation)
+    forward = pygame.Vector2(0, -1).rotate(self.rotation)
     self.position += forward * PLAYER_SPEED * dt
+
+
+  def shoot(self):
+    [x, y] = self.position
+    [b_x, b_y] = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_RADIUS
+    
+    shot = Shot(x + b_x, y + b_y, SHOT_RADIUS)
+    shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
