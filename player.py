@@ -7,6 +7,7 @@ class Player(CircleShape):
   def __init__(self, x, y):
     super().__init__(x, y, PLAYER_RADIUS)
     self.rotation = 0
+    self.cooldown = 0
 
 
   def triangle(self):
@@ -53,6 +54,9 @@ class Player(CircleShape):
     if y > SCREEN_HEIGHT:
       self.position = pygame.Vector2(x, 0)
 
+    # Shot cooldown
+    self.cooldown -= dt
+
   
   def move(self, dt):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)
@@ -60,8 +64,14 @@ class Player(CircleShape):
 
 
   def shoot(self):
+    if self.cooldown > 0:
+      return
+    
+    # Barrel (shot start point)
     [x, y] = self.position
     [b_x, b_y] = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_RADIUS
     
+    # Projectile
     shot = Shot(x + b_x, y + b_y, SHOT_RADIUS)
     shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+    self.cooldown = PLAYER_SHOOT_COOLDOWN
