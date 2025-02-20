@@ -58,6 +58,8 @@ def main():
         if asteroid.collision(player):
           game_over(screen, player.score)
     for asset in drawable:
+      if asset.remove_if_offscreen and asset.is_offscreen():
+        asset.kill()
       asset.draw(screen)
 
     score_display(screen, player.score)
@@ -72,11 +74,11 @@ def main():
 def make_font(text, type = "default"):
   font_size = 100; div_sh = 2; div_sw = 2; div_tw = 2; div_th = 2
   if type == "score":
-    div_sw = 1.15; div_sh = 10; font_size = 30; div_tw = 1
+    div_sw = 1.22; div_sh = 10; font_size = 30; div_tw = 0
 
   font = pygame.freetype.Font(None, size=font_size)
   text_rect = font.get_rect(text)
-  text_x = SCREEN_WIDTH//div_sw - text_rect.width//div_tw
+  text_x = SCREEN_WIDTH//div_sw - ((text_rect.width//div_tw) if div_tw else 0)
   text_y = SCREEN_HEIGHT//div_sh - text_rect.height//div_th
   return font, (text_x, text_y)
 
@@ -88,7 +90,7 @@ def score_display(screen, score):
 
 
 def game_over(screen, score):
-  text_gameover = f"Game over!"
+  text_gameover = "Game over!"
   font_gameover, coords = make_font(text_gameover)
   font_gameover.render_to(screen, coords, text_gameover, fgcolor="white", bgcolor="black")
   score_display(screen, score)

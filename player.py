@@ -11,6 +11,7 @@ class Player(CircleShape):
     self.rotation = 0
     self.cooldown = 0
     self.score = 0
+    self.remove_if_offscreen = False
 
   def triangle(self):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)

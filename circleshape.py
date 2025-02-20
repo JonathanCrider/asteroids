@@ -1,4 +1,5 @@
 import pygame
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class CircleShape(pygame.sprite.Sprite):
@@ -11,6 +12,7 @@ class CircleShape(pygame.sprite.Sprite):
     self.position = pygame.Vector2(x, y)
     self.velocity = pygame.Vector2(0, 0)
     self.radius = radius
+    self.remove_if_offscreen = True
 
   def draw(self, screen):
     pass
@@ -20,3 +22,8 @@ class CircleShape(pygame.sprite.Sprite):
 
   def collision(self, other):
     return self.position.distance_to(other.position) <= self.radius + other.radius
+  
+  def is_offscreen(self, screen_width = SCREEN_WIDTH, screen_height = SCREEN_HEIGHT):
+    offset = 100
+    x, y = self.position
+    return x < -offset or x > screen_width + offset or y < -offset or y > screen_height + offset
