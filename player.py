@@ -1,4 +1,5 @@
 import pygame
+import pygame.gfxdraw
 from circleshape import CircleShape
 from shots import Shot
 from constants import *
@@ -19,10 +20,11 @@ class Player(CircleShape):
     return [a, b, c]
   
 
-  def draw(self, screen, color = "white"):
+  def draw(self, screen, color = (112, 40, 255)):
     a, b, c = self.triangle()
     line_width = 2
-    pygame.draw.polygon(screen, color, [a, b, c], line_width)
+    # pygame.draw.polygon(screen, color, [a, b, c], line_width)
+    pygame.gfxdraw.filled_polygon(screen, [a, b, c], color)
 
   
   def rotate(self, dt):
@@ -55,7 +57,8 @@ class Player(CircleShape):
       self.position = pygame.Vector2(x, 0)
 
     # Shot cooldown
-    self.cooldown -= dt
+    if self.cooldown > 0:
+      self.cooldown -= dt
 
   
   def move(self, dt):
