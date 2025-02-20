@@ -28,15 +28,15 @@ class Player(CircleShape):
 
   def update(self, dt):
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a]:
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
       self.rotate(dt * -1)
-    if keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
       self.rotate(dt)
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP] or keys[pygame.K_w]:
       self.move(dt)
-    if keys[pygame.K_s]:
+    if keys[pygame.K_DOWN] or keys[pygame.K_s]:
       self.move(dt * -1)
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] or keys[pygame.K_RETURN] or keys[pygame.K_KP_ENTER]:
       self.shoot()
 
     # Movement wrapping when crossing screen bounds
