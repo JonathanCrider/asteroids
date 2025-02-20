@@ -14,6 +14,8 @@ def main():
 
   # Setup
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+  bg = pygame.image.load("assets/bg.jpg").convert()
+  bg.set_alpha(120)
   timeclock = pygame.time.Clock()
   dt = 0
   
@@ -29,7 +31,7 @@ def main():
   AsteroidField.containers = (updatable)
   Shot.containers = (shots, updatable, drawable)
 
-  # Entities
+  # Initialize Entities
   player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
   AsteroidField()
 
@@ -39,12 +41,19 @@ def main():
       if event.type == pygame.QUIT:
           return
     screen.fill("black")
+    screen.blit(bg, (0,0))
 
     for asset in updatable:
       asset.update(dt)
     for asteroid in asteroids:
-      if asteroid.collision(player):
-        game_over(screen)
+      for shot in shots:
+        if asteroid.collision(shot):
+          asteroid.split()
+          shot.kill()
+          break
+      else:
+        if asteroid.collision(player):
+          game_over(screen)
     for asset in drawable:
       asset.draw(screen)
 
