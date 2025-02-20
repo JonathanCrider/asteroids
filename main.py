@@ -16,7 +16,6 @@ def main():
   # Setup
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   bg = pygame.image.load("assets/bg.jpg").convert()
-  ship = pygame.image.load("assets/ship.webp")
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
   dt = 0
