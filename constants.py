@@ -17,3 +17,7 @@ PLAYER_SHOOT_COOLDOWN = 0.3
 
 # Shots
 SHOT_RADIUS = 5
+
+# Levels (based on score)
+LEVEL_2 = 50
+LEVEL_3 = 100

@@ -13,14 +13,20 @@ class Player(CircleShape):
     self.score = 0
     self.num_shots = 0
     self.remove_if_offscreen = False
+    self.level = 1
 
     # Graphic
-    original_image = pygame.image.load("assets/ship.png").convert_alpha()
+    self.make_ship()
+
+  def make_ship(self, color = (112, 40, 255)):
+    [x, y] = self.position
+    level = self.level
+    original_image = pygame.image.load(f"assets/ship-level-{level}.png").convert_alpha()
     max_dimension = max(original_image.get_width(), original_image.get_height())
     scale = (2 * PLAYER_RADIUS + 2 ) / max_dimension
     image_size = (int(original_image.get_width() * scale), int(original_image.get_height() * scale))
     self.image = pygame.transform.smoothscale(original_image, image_size)
-    self.image = self.recolor_image(self.image, (112, 40, 255))
+    self.image = self.recolor_image(self.image, color)
     self.original_image = self.image
     self.image_rect = self.image.get_rect(center=(x, y))
 
@@ -76,7 +82,6 @@ class Player(CircleShape):
       self.shoot()
 
     # Movement wrapping when crossing screen bounds
-    # TODO: account for direction
     [x, y] = self.position
     if x < 0:
       self.position = pygame.Vector2(SCREEN_WIDTH, y)
@@ -91,6 +96,13 @@ class Player(CircleShape):
     if self.cooldown > 0:
       self.cooldown -= dt
 
+    # Level Up
+    if self.score == LEVEL_2 and self.level == 1:
+      self.level_up()
+    if self.score == LEVEL_3 and self.level == 2:
+      self.level_up()
+    
+
   def move(self, dt):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)
     self.position += forward * PLAYER_SPEED * dt
@@ -102,9 +114,40 @@ class Player(CircleShape):
     # Barrel (shot start point)
     [x, y] = self.position
     [b_x, b_y] = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_RADIUS
-    
+
+    # Modifiers
+    velocity_modifier = 1
+    cooldown_modifier = 1
+
     # Projectile
     shot = Shot(x + b_x, y + b_y, SHOT_RADIUS)
-    shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
-    self.cooldown = PLAYER_SHOOT_COOLDOWN
+    shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * (PLAYER_SHOOT_SPEED * velocity_modifier)
+    
+    # Projectile - Level Upgrades
+    if self.level == 2:
+      velocity_modifier = 1.5
+      cooldown_modifier = 0.5
+    if self.level == 3:
+      velocity_modifier = 0.5
+      cooldown_modifier = 2.5
+      rotation_offset = 10
+      origin_offset = PLAYER_RADIUS * 2 + PLAYER_RADIUS
+      [l_x, l_y] = pygame.Vector2(0, -1).rotate(self.rotation - origin_offset) * PLAYER_RADIUS
+      shot_L = Shot(x + l_x, y + l_y, SHOT_RADIUS)
+      shot_L.velocity = pygame.Vector2(0, -1).rotate(self.rotation - rotation_offset) * PLAYER_SHOOT_SPEED
+      [r_x, r_y] = pygame.Vector2(0, -1).rotate(self.rotation + origin_offset) * PLAYER_RADIUS
+      shot_R = Shot(x + r_x, y + r_y, SHOT_RADIUS)
+      shot_R.velocity = pygame.Vector2(0, -1).rotate(self.rotation + rotation_offset) * PLAYER_SHOOT_SPEED
+      self.num_shots += 2
+    
+    self.cooldown = PLAYER_SHOOT_COOLDOWN * cooldown_modifier
     self.num_shots += 1
+
+
+  
+  def level_up(self):
+    self.level += 1
+    if self.level == 2:
+      self.make_ship((0, 135, 238))
+    if self.level == 3:
+      self.make_ship((8, 243, 8))
