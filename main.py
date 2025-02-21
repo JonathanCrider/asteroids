@@ -1,6 +1,7 @@
 import pygame
 import pygame.freetype
 import sys
+import math
 from constants import *
 from player import *
 from asteroid import Asteroid
@@ -37,7 +38,8 @@ def main():
   AsteroidField()
 
   # Game Loop
-  while True:
+  running = True
+  while running:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
           return
@@ -55,13 +57,13 @@ def main():
           break
       else:
         if asteroid.collision(player):
-          game_over(screen, player.score)
+          running = game_over(screen, bg, player.score, player.num_shots)
     for asset in drawable:
       if asset.remove_if_offscreen and asset.is_offscreen():
         asset.kill()
       asset.draw(screen)
 
-    score_display(screen, player.score)
+    score_display(screen, player.score, player.num_shots)
     pygame.display.flip()
 
     dt = timeclock.tick(60) / 1000
@@ -70,33 +72,75 @@ def main():
 # HELPER FUNCTIONS
 
 
-def make_font(text, type = "default"):
-  font_size = 100; div_sh = 2; div_sw = 2; div_tw = 2; div_th = 2
+def make_font(text, type = "centered"):
+  font_size = 100; font_face = "courier"
+  div_sh = 2; div_sw = 2; div_tw = 2; div_th = 2
   if type == "score":
-    div_sw = 1.22; div_sh = 10; font_size = 30; div_tw = 0
+    font_size = 30
+    div_sw = 1.22; div_sh = 10; div_tw = 0
+  if type == "accuracy":
+    font_size = 20
+    div_sw = 1.22; div_sh = 7; div_tw = 0
+  if type == "gameover":
+    font_face = "starjedi"
+  if type == "replay":
+    font_size = 30
+    div_sh = 1.5
 
-  font = pygame.freetype.Font(None, size=font_size)
+  font = pygame.freetype.SysFont(font_face, size=font_size)
   text_rect = font.get_rect(text)
   text_x = SCREEN_WIDTH//div_sw - ((text_rect.width//div_tw) if div_tw else 0)
   text_y = SCREEN_HEIGHT//div_sh - text_rect.height//div_th
   return font, (text_x, text_y)
 
 
-def score_display(screen, score):
+def render_text(screen, text, type, fgcolor = "white", bgcolor = "black"):
+  font, coords = make_font(text, type)
+  font.render_to(screen, coords, text, fgcolor=fgcolor, bgcolor=bgcolor)
+
+
+def score_display(screen, score, num_shots):
   text_score = f"Score: {score}"
-  font_score, s_coords = make_font(text_score, "score")
-  font_score.render_to(screen, s_coords, text_score, fgcolor="yellow", bgcolor="black")
+  text_accuracy = f"Accuracy: {score / num_shots if num_shots > 0 else 1:.0%}"
+  render_text(screen, text_score, "score", "yellow")
+  render_text(screen, text_accuracy, "accuracy", "grey")
 
 
-def game_over(screen, score):
-  text_gameover = "Game over!"
-  font_gameover, coords = make_font(text_gameover)
-  font_gameover.render_to(screen, coords, text_gameover, fgcolor="white", bgcolor="black")
-  score_display(screen, score)
+def game_over(screen, bg, score, num_shots):
+  timeclock = pygame.time.Clock()
+  dt = 0
+  waiting = True
+  replay = False
+
+  # Game Over screen loop
+  while waiting:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+          waiting = False
+    
+    screen.fill("black")
+    screen.blit(bg, (0,0))
+
+    render_text(screen, "Game over!", "gameover", "yellow")
+    render_text(screen, f"Press 'r' to replay ({math.floor(10 - dt)})", "replay")
+    score_display(screen, score, num_shots)
+    pygame.display.flip()
+    
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_r]:
+      replay = True
+      waiting = False
+    if keys[pygame.K_ESCAPE]:
+      waiting = False
+
+    dt += timeclock.tick(60) / 1000
+    if dt > 10:
+      waiting = False
   
-  pygame.display.flip()
-  pygame.time.wait(3000)
-  sys.exit()
+  if replay:
+    main()
+  else:
+    sys.exit()
 
 
 if __name__ == "__main__":
