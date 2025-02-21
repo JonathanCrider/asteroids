@@ -10,6 +10,8 @@ The project demonstrates OOP principles and basic game mechanics.
 - Player visuals: Enhanced visual distinction between player, shots, and asteroids
 - Background: Enhanced background...should look like you're in space, right?
 - Score: Added scoring mechanic and persistant visual display of current score
-- End screen: Game over screen before exit
+- End screen: Game over screen loop before exit, allows game replay
 - Fixed `Overflow Error`: This occurs because when entities are created, they are not removed when offscreen, especially shots
+- Ship upgrades: Level-based ship upgrades
+- Launcher: Landing window with start button
 - \[WIP\] Packaged executable: So you don't have to launch from the command line (MacOS first, we'll see about Windows)
