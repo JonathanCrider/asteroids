@@ -11,6 +11,7 @@ class Player(CircleShape):
     self.rotation = 0
     self.cooldown = 0
     self.score = 0
+    self.num_shots = 0
     self.remove_if_offscreen = False
 
     # Graphic
@@ -106,3 +107,4 @@ class Player(CircleShape):
     shot = Shot(x + b_x, y + b_y, SHOT_RADIUS)
     shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
     self.cooldown = PLAYER_SHOOT_COOLDOWN
+    self.num_shots += 1
