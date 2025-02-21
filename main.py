@@ -38,8 +38,7 @@ def main():
   AsteroidField()
 
   # Game Loop
-  running = True
-  while running:
+  while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
           return
@@ -57,7 +56,7 @@ def main():
           break
       else:
         if asteroid.collision(player):
-          running = game_over(screen, bg, player.score, player.num_shots)
+          game_over(screen, bg, player.score, player.num_shots)
     for asset in drawable:
       if asset.remove_if_offscreen and asset.is_offscreen():
         asset.kill()
