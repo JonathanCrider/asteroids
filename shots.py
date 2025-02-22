@@ -1,15 +1,17 @@
 import pygame
 import pygame.gfxdraw
+from constants import *
 from circleshape import CircleShape
 
 
 class Shot(CircleShape):
-  def __init__(self, x, y, radius):
+  def __init__(self, x, y, radius, color = YELLOW):
     super().__init__(x, y, radius)
+    self.color = color
   
-  def draw(self, screen, color = (245, 245, 0)):
+  def draw(self, screen):
     [x, y] = self.position
-    pygame.gfxdraw.filled_circle(screen, int(x), int(y), self.radius, color)
+    pygame.gfxdraw.filled_circle(screen, int(x), int(y), self.radius, self.color)
 
   def update(self, dt):
     self.position += self.velocity * dt

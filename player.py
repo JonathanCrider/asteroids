@@ -3,6 +3,7 @@ import pygame.gfxdraw
 from circleshape import CircleShape
 from shots import Shot
 from constants import *
+from asteroidfield import AsteroidField
 
 
 class Player(CircleShape):
@@ -14,13 +15,13 @@ class Player(CircleShape):
     self.num_shots = 0
     self.remove_if_offscreen = False
     self.level = 1
+    self.previous_level = 0
 
     # Graphic
     self.make_ship()
 
-  def make_ship(self, color = (112, 40, 255)):
+  def make_ship(self, color = (112, 40, 255), level = 1):
     [x, y] = self.position
-    level = self.level
     original_image = pygame.image.load(f"assets/ship-level-{level}.png").convert_alpha()
     max_dimension = max(original_image.get_width(), original_image.get_height())
     scale = (2 * PLAYER_RADIUS + 2 ) / max_dimension
@@ -38,14 +39,14 @@ class Player(CircleShape):
     c = self.position - forward * self.radius + right
     return [a, b, c]
 
-  def draw(self, screen, color = (112, 40, 255)):
+  def draw(self, screen, color = PURPLE):
     # a, b, c = self.triangle()
     # pygame.gfxdraw.filled_polygon(screen, [a, b, c], color)
     rotated_image = pygame.transform.rotate(self.original_image, -self.rotation)
     rotated_rect = rotated_image.get_rect(center=(self.position.x, self.position.y))
     screen.blit(rotated_image, rotated_rect.topleft)
   
-  def recolor_image(self, image, new_color = (112, 40, 255)):
+  def recolor_image(self, image, new_color = PURPLE):
     # Create a new surface with alpha (transparency) support and fill it with a transparent background
     recolored_image = pygame.Surface(image.get_size(), pygame.SRCALPHA)
 
@@ -81,6 +82,17 @@ class Player(CircleShape):
     if keys[pygame.K_SPACE] or keys[pygame.K_RETURN] or keys[pygame.K_KP_ENTER]:
       self.shoot()
 
+    self.out_of_bounds()
+
+    # Shot cooldown
+    if self.cooldown > 0:
+      self.cooldown -= dt
+
+    # Level Up
+    if self.score == SCORE_LEVELS[self.level] // TEST_SCORE_MODIFIER:
+      self.level_up()
+
+  def out_of_bounds(self):
     # Movement wrapping when crossing screen bounds
     [x, y] = self.position
     if x < 0:
@@ -91,17 +103,6 @@ class Player(CircleShape):
       self.position = pygame.Vector2(x, SCREEN_HEIGHT)
     if y > SCREEN_HEIGHT:
       self.position = pygame.Vector2(x, 0)
-
-    # Shot cooldown
-    if self.cooldown > 0:
-      self.cooldown -= dt
-
-    # Level Up
-    if self.score == LEVEL_2 and self.level == 1:
-      self.level_up()
-    if self.score == LEVEL_3 and self.level == 2:
-      self.level_up()
-    
 
   def move(self, dt):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)
@@ -115,39 +116,62 @@ class Player(CircleShape):
     [x, y] = self.position
     [b_x, b_y] = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_RADIUS
 
-    # Modifiers
+    # Projectile - Modifiers
     velocity_modifier = 1
     cooldown_modifier = 1
-
-    # Projectile
-    shot = Shot(x + b_x, y + b_y, SHOT_RADIUS)
-    shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * (PLAYER_SHOOT_SPEED * velocity_modifier)
+    color = YELLOW
     
     # Projectile - Level Upgrades
-    if self.level == 2:
+    if self.level >= 2:
       velocity_modifier = 1.5
       cooldown_modifier = 0.5
-    if self.level == 3:
-      velocity_modifier = 0.5
-      cooldown_modifier = 2.5
+      color = PINK
+    if self.level >= 4:
+      if self.level == 4:
+        velocity_modifier = 0.5
+        cooldown_modifier = 2.1
+        color = PURPLE
+      if self.level == 5:
+        # adds more asteroids, so we'll bump the stats a bit
+        velocity_modifier = 0.8
+        cooldown_modifier = 1.4
+        color = RED
+
       rotation_offset = 10
       origin_offset = PLAYER_RADIUS * 2 + PLAYER_RADIUS
+
+      # Left Barrel
       [l_x, l_y] = pygame.Vector2(0, -1).rotate(self.rotation - origin_offset) * PLAYER_RADIUS
-      shot_L = Shot(x + l_x, y + l_y, SHOT_RADIUS)
-      shot_L.velocity = pygame.Vector2(0, -1).rotate(self.rotation - rotation_offset) * PLAYER_SHOOT_SPEED
+      shot_L = Shot(x + l_x, y + l_y, SHOT_RADIUS, color)
+      shot_L.velocity = pygame.Vector2(0, -1).rotate(self.rotation - rotation_offset) * (PLAYER_SHOOT_SPEED * velocity_modifier)
+      # Right Barrel
       [r_x, r_y] = pygame.Vector2(0, -1).rotate(self.rotation + origin_offset) * PLAYER_RADIUS
-      shot_R = Shot(x + r_x, y + r_y, SHOT_RADIUS)
-      shot_R.velocity = pygame.Vector2(0, -1).rotate(self.rotation + rotation_offset) * PLAYER_SHOOT_SPEED
+      shot_R = Shot(x + r_x, y + r_y, SHOT_RADIUS, color)
+      shot_R.velocity = pygame.Vector2(0, -1).rotate(self.rotation + rotation_offset) * (PLAYER_SHOOT_SPEED * velocity_modifier)
+      # Additional Count
       self.num_shots += 2
     
+    # Projectile - Main
+    shot = Shot(x + b_x, y + b_y, SHOT_RADIUS, color)
+    shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * (PLAYER_SHOOT_SPEED * velocity_modifier)
+    
+    # Projectile - Status
     self.cooldown = PLAYER_SHOOT_COOLDOWN * cooldown_modifier
     self.num_shots += 1
-
 
   
   def level_up(self):
     self.level += 1
     if self.level == 2:
-      self.make_ship((0, 135, 238))
+      self.make_ship(BLUE)
+      AsteroidField()
     if self.level == 3:
-      self.make_ship((8, 243, 8))
+      print("boss 1")
+      # All asteroidFields destroyed
+    if self.level == 4:
+      self.make_ship(GREEN, self.level)
+      AsteroidField()
+    if self.level == 5:
+      self.make_ship(PINK, 4)
+      AsteroidField()
+      AsteroidField()
