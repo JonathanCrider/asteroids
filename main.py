@@ -6,6 +6,8 @@ from constants import *
 from player import *
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from boss import Boss
+from bossfield import BossField
 
 
 def main():
@@ -25,12 +27,17 @@ def main():
   updatable = pygame.sprite.Group()
   drawable = pygame.sprite.Group()
   asteroids = pygame.sprite.Group()
+  asteroid_fields = pygame.sprite.Group()
+  boss_fields = pygame.sprite.Group()
+  bosses = pygame.sprite.Group()
   shots = pygame.sprite.Group()
   
   # Containers
   Player.containers = (updatable, drawable)
   Asteroid.containers = (asteroids, updatable, drawable)
-  AsteroidField.containers = (updatable)
+  AsteroidField.containers = (updatable, asteroid_fields)
+  BossField.containers = (updatable, boss_fields)
+  Boss.containers = (bosses, updatable, drawable)
   Shot.containers = (shots, updatable, drawable)
 
   # Initialize Entities
@@ -44,9 +51,36 @@ def main():
           return
     screen.fill("black")
     screen.blit(bg, (0,0))
+    
+    # TODO: boss kill, remove boss field, increment player level
+    if player.level == 3:
+      if len(asteroid_fields) > 0:
+        for astroid_field in asteroid_fields:
+          astroid_field.kill()
+        for asteroid in asteroids:
+          asteroid.kill()
+      if len(boss_fields) == 0:
+        # TODO: make field to spawn bosses based on player level
+        BossField()
+      for boss in bosses:
+        if boss.health == 0:
+          boss.kill()
+          player.level_up()
+          break
+        for shot in shots:
+          if boss.collision(shot):
+            boss.health -= 1
+            shot.kill()
+            break
+        else:
+          if boss.collision(player):
+            game_over(screen, bg, player.score, player.num_shots)
 
     for asset in updatable:
-      asset.update(dt)
+      if type(asset) == Boss:
+        asset.targeting(dt, player)
+      else:
+        asset.update(dt)
     for asteroid in asteroids:
       for shot in shots:
         if asteroid.collision(shot):
