@@ -9,6 +9,7 @@ Project manager kept giving me sticky notes with update requests so I forced him
 - Enhanced background...should look like you're in space, right? Also displays your current score
 - Player enhancements and upgrades:
   - added wrapping so you don't drift into the void
+  - enhanced control surface options for easier movement
   - upgraded ship visuals from basic triangle to level-based image overlay
   - introduced leveling system to enhance visuals and weapon (shots) based on score
 - Asteroid visual upgrades: now spinning, randomly shaped polygons instead of basic circles
@@ -83,3 +84,14 @@ python3 main.py
 ```bash
 python3 launcher.py
 ```
+
+### Controls
+
+Movement:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>W</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- OR --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>↑</kbd> \
+<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd>
+
+Fire shot:
+
+<kbd>Space</kbd> -- OR -- <kbd>⏎ Return</kbd> -- OR -- <kbd>⏎ Numpad Enter</kbd>
