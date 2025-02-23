@@ -27,7 +27,7 @@ SHOT_RADIUS = 5
 
 # Levels (based on score)
 TEST_SCORE_MODIFIER = 1
-SCORE_LEVELS = [-inf, 50, 100, 200, 400, inf]
+SCORE_LEVELS = [-inf, 40, 120, 220, 340, inf]
 
 # Colors
 RED = (255, 0, 0)
