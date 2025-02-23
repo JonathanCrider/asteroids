@@ -1,6 +1,6 @@
 import pygame
 import random
-from boss import Boss
+from entities.boss import Boss
 from constants import *
 
 # TODO: DRY | Create parent field class for both boss and asteroid fields

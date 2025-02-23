@@ -1,5 +1,9 @@
+# Local Dev
 venv/
 __pycache__/
 
+# Local Build
 dist/
 build/
+*.spec
+*.icns

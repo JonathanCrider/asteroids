@@ -3,11 +3,11 @@ import pygame.freetype
 import sys
 import math
 from constants import *
-from player import *
-from asteroid import Asteroid
-from asteroidfield import AsteroidField
-from boss import Boss
-from bossfield import BossField
+from entities.player import *
+from entities.asteroid import Asteroid
+from fields.asteroidfield import AsteroidField
+from entities.boss import Boss
+from fields.bossfield import BossField
 
 
 def main():

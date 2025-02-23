@@ -1,9 +1,9 @@
 import pygame
 import pygame.gfxdraw
-from circleshape import CircleShape
-from shots import Shot
+from entities.circleshape import CircleShape
+from entities.shots import Shot
 from constants import *
-from asteroidfield import AsteroidField
+from fields.asteroidfield import AsteroidField
 
 
 class Player(CircleShape):

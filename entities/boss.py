@@ -2,7 +2,7 @@ import pygame
 import random
 import math
 from constants import *
-from circleshape import CircleShape
+from entities.circleshape import CircleShape
 
 
 class Boss(CircleShape):
