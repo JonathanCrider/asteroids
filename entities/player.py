@@ -8,7 +8,7 @@ import os
 
 
 class Player(CircleShape):
-  def __init__(self, x, y):
+  def __init__(self, x, y, shoot_sound):
     super().__init__(x, y, PLAYER_RADIUS)
     self.rotation = 0
     self.cooldown = 0
@@ -16,6 +16,7 @@ class Player(CircleShape):
     self.num_shots = 0
     self.wrap_position = True
     self.level = 1
+    self.shoot_sound = shoot_sound
 
     # Graphic
     self.make_ship()
@@ -105,9 +106,13 @@ class Player(CircleShape):
     self.position += forward * PLAYER_SPEED * dt
 
   def shoot(self):
+    
     if self.cooldown > 0:
       return
     
+    # Sound
+    pygame.mixer.Sound.play(self.shoot_sound).set_volume(0.1)
+
     # Barrel (shot start point)
     [x, y] = self.position
     [b_x, b_y] = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_RADIUS

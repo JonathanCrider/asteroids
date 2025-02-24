@@ -9,57 +9,57 @@ from main import main
 
 
 # def initialize_pygame(embed):
-#     """Initialize pygame and start the game loop."""
-#     # Set SDL environment to use the tkinter frame
-#     os.environ["SDL_VIDEODRIVER"] = "cocoa"  # Appropriate driver for macOS (cocoa)
-#     os.environ["SDL_WINDOWID"] = str(embed.winfo_id())  # Embed pygame into tkinter
+#   """Initialize pygame and start the game loop."""
+#   # Set SDL environment to use the tkinter frame
+#   os.environ["SDL_VIDEODRIVER"] = "cocoa"  # Appropriate driver for macOS (cocoa)
+#   os.environ["SDL_WINDOWID"] = str(embed.winfo_id())  # Embed pygame into tkinter
 
-#     print("Embedding into window ID:", os.environ["SDL_WINDOWID"])  # Debugging output
-#     time.sleep(0.5)
+#   print("Embedding into window ID:", os.environ["SDL_WINDOWID"])  # Debugging output
+#   time.sleep(0.5)
 
-#     # Initialize pygame
-#     import pygame
-#     pygame.display.init()
-#     # segmentation error with init
-#     pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+#   # Initialize pygame
+#   import pygame
+#   pygame.display.init()
+#   # segmentation error with init
+#   pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
-#     # Start the pygame main loop on a separate thread
-#     game_thread = Thread(target=main)
-#     game_thread.daemon = True  # Ensures the thread exits when tkinter exits
-#     game_thread.start()
+#   # Start the pygame main loop on a separate thread
+#   game_thread = Thread(target=main)
+#   game_thread.daemon = True  # Ensures the thread exits when tkinter exits
+#   game_thread.start()
 
 
 # def start_game():
-#     """Create the tkinter frame and initialize pygame after idle."""
-#     # Create an embedded frame for pygame inside tkinter
-#     embed = tk.Frame(root, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)  # Adjust to your screen size
-#     embed.pack(pady=20)  # Add padding or place where desired
-#     embed.update()  # Make sure tkinter realizes the frame
+#   """Create the tkinter frame and initialize pygame after idle."""
+#   # Create an embedded frame for pygame inside tkinter
+#   embed = tk.Frame(root, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)  # Adjust to your screen size
+#   embed.pack(pady=20)  # Add padding or place where desired
+#   embed.update()  # Make sure tkinter realizes the frame
 
-#     # Use after_idle to initialize pygame when tkinter's event loop is idle
-#     root.after_idle(initialize_pygame, embed)
+#   # Use after_idle to initialize pygame when tkinter's event loop is idle
+#   root.after_idle(initialize_pygame, embed)
 
 
 def resource_path(relative_path):
-    if hasattr(sys, "_MEIPASS"):
-        # If running as a PyInstaller bundle
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.abspath(relative_path)
+  if hasattr(sys, "_MEIPASS"):
+    # If running as a PyInstaller bundle
+    return os.path.join(sys._MEIPASS, relative_path)
+  return os.path.abspath(relative_path)
 
 
 def start_game():
-    # Construct full path to main.py in the bundle
-    main_script = resource_path("main.py")
-    subprocess.run(["python", main_script])
-    # This ensures 'main.py' will be executed correctly
+  # Construct full path to main.py in the bundle
+  main_script = resource_path("main.py")
+  subprocess.run(["python", main_script])
+  # This ensures 'main.py' will be executed correctly
 
 
 def quit_launcher():
-    """Properly quit the application."""
-    root.quit()
-    root.destroy()
-    sys.exit()
+  """Properly quit the application."""
+  root.quit()
+  root.destroy()
+  sys.exit()
 
 
 # Create the main tkinter window

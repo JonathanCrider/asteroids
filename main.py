@@ -13,6 +13,11 @@ from fields.bossfield import BossField
 
 def main():
   pygame.init()
+  assets_path = os.path.join(os.path.dirname(__file__), "assets")
+  shoot_sound = pygame.mixer.Sound(f"{assets_path}/sounds/shoot.mp3")
+  death_sound = pygame.mixer.Sound(f"{assets_path}/sounds/death.mp3")
+
+  start_music(f"{assets_path}/sounds/bg_music.mp3")
   print("Starting asteroids!")
   print(f"Screen width: {SCREEN_WIDTH}")
   print(f"Screen height: {SCREEN_HEIGHT}")
@@ -23,8 +28,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   else:
     screen = pygame.display.get_surface()
-  bg_path = os.path.join(os.path.dirname(__file__), "assets", "bg.jpg")
-  bg = pygame.image.load(bg_path).convert()
+  bg = pygame.image.load(f"{assets_path}/bg.jpg").convert()
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
   dt = 0
@@ -47,7 +51,7 @@ def main():
   Shot.containers = (shots, updatable, drawable)
 
   # Initialize Entities
-  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2)
+  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, shoot_sound)
   AsteroidField()
 
   # Game Loop
@@ -61,6 +65,7 @@ def main():
     # TODO: boss kill, remove boss field, increment player level
     if player.level == 3:
       if len(asteroid_fields) > 0:
+        start_music(f"{assets_path}/sounds/boss1_loop.mp3")
         for astroid_field in asteroid_fields:
           astroid_field.kill()
         for asteroid in asteroids:
@@ -72,6 +77,7 @@ def main():
         if boss.health == 0:
           boss.kill()
           player.level_up()
+          start_music(f"{assets_path}/sounds/bg_music.mp3")
           break
         for shot in shots:
           if boss.collision(shot):
@@ -80,7 +86,7 @@ def main():
             break
         else:
           if boss.collision(player):
-            game_over(screen, bg, player.score, player.num_shots)
+            game_over(screen, bg, player.score, player.num_shots, death_sound)
 
     for asset in updatable:
       asset.update(dt, player)
@@ -93,7 +99,7 @@ def main():
           break
       else:
         if asteroid.collision(player):
-          game_over(screen, bg, player.score, player.num_shots)
+          game_over(screen, bg, player.score, player.num_shots, death_sound)
     for asset in drawable:
       asset.draw(screen)
       if asset.is_offscreen():
@@ -146,11 +152,21 @@ def score_display(screen, score, num_shots):
   render_text(screen, text_accuracy, "accuracy", "grey")
 
 
-def game_over(screen, bg, score, num_shots):
+def start_music(path):
+  pygame.mixer.music.stop()
+  pygame.mixer.music.load(path)
+  pygame.mixer.music.set_volume(0.2)
+  pygame.mixer.music.play(-1)
+
+
+def game_over(screen, bg, score, num_shots, death_sound):
   timeclock = pygame.time.Clock()
   dt = 0
   waiting = True
   replay = False
+
+  pygame.mixer.Sound.play(death_sound).set_volume(0.2)
+  pygame.mixer.music.stop()
 
   # Game Over screen loop
   while waiting:
