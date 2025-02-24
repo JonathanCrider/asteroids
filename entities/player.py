@@ -14,9 +14,8 @@ class Player(CircleShape):
     self.cooldown = 0
     self.score = 0
     self.num_shots = 0
-    self.remove_if_offscreen = False
+    self.wrap_position = True
     self.level = 1
-    self.previous_level = 0
 
     # Graphic
     self.make_ship()
@@ -89,27 +88,13 @@ class Player(CircleShape):
     if keys[pygame.K_d]:
       self.strafe(dt)
 
-    self.out_of_bounds()
-
     # Shot cooldown
     if self.cooldown > 0:
       self.cooldown -= dt
 
     # Level Up
-    if self.score == SCORE_LEVELS[self.level] // TEST_SCORE_MODIFIER:
+    if self.score == LEVEL_SCORE_THRESHOLDS[self.level] // SCORE_THRESHOLD_MODIFIER:
       self.level_up()
-
-  def out_of_bounds(self):
-    # Movement wrapping when crossing screen bounds
-    [x, y] = self.position
-    if x < 0:
-      self.position = pygame.Vector2(SCREEN_WIDTH, y)
-    if x > SCREEN_WIDTH:
-      self.position = pygame.Vector2(0, y)
-    if y < 0:
-      self.position = pygame.Vector2(x, SCREEN_HEIGHT)
-    if y > SCREEN_HEIGHT:
-      self.position = pygame.Vector2(x, 0)
 
   def move(self, dt):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)

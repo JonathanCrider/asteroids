@@ -96,8 +96,11 @@ def main():
           game_over(screen, bg, player.score, player.num_shots)
     for asset in drawable:
       asset.draw(screen)
-      if asset.remove_if_offscreen and asset.is_offscreen():
-        asset.kill()
+      if asset.is_offscreen():
+        if asset.wrap_position:
+          asset.execute_wrap_position()
+        else:
+          asset.kill()
         
 
     score_display(screen, player.score, player.num_shots)

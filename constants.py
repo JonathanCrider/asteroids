@@ -26,8 +26,8 @@ PLAYER_SHOOT_COOLDOWN = 0.3
 SHOT_RADIUS = 5
 
 # Levels (based on score)
-TEST_SCORE_MODIFIER = 1
-SCORE_LEVELS = [-inf, 40, 100, 180, 280, inf]
+SCORE_THRESHOLD_MODIFIER = 1 # for testing, 1 for production
+LEVEL_SCORE_THRESHOLDS = [-inf, 40, 100, 180, 280, inf]
 
 # Colors
 RED = (255, 0, 0)

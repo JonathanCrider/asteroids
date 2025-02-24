@@ -10,7 +10,7 @@ class Boss(CircleShape):
     super().__init__(x, y, radius)
     self.rotation_angle = 0
     self.rotation_speed = random.uniform(-30, 30)
-    self.remove_if_offscreen = False
+    self.wrap_position = True
     self.num_sides = 12
     self.level = level
     self.health = health
