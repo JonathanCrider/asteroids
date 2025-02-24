@@ -1,11 +1,21 @@
 import tkinter as tk
 import subprocess
+import sys
+import os
+from main import main
+
+# Use this path to locate bundled files like 'main.py'
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        # If running as a PyInstaller bundle
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.abspath(relative_path)
 
 def start_game():
-    # Run the game as an external process so the GUI remains active
-    # Replace 'path_to_game' with the path to your main game entry file
-    subprocess.run(["python", "main.py"])
-    # Game will run in this subprocess, and when it exits, you can restart from the GUI
+    # Construct full path to main.py in the bundle
+    main_script = resource_path("main.py")
+    subprocess.run(["python", main_script])
+    # This ensures 'main.py' will be executed correctly
 
 # Create the main GUI window
 root = tk.Tk()
