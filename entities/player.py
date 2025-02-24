@@ -73,9 +73,9 @@ class Player(CircleShape):
 
   def update(self, dt, target):
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+    if keys[pygame.K_LEFT]:
       self.rotate(dt * -1)
-    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT]:
       self.rotate(dt)
     if keys[pygame.K_UP] or keys[pygame.K_w]:
       self.move(dt)
@@ -83,6 +83,11 @@ class Player(CircleShape):
       self.move(dt * -1)
     if keys[pygame.K_SPACE] or keys[pygame.K_RETURN] or keys[pygame.K_KP_ENTER]:
       self.shoot()
+    # Strafing
+    if keys[pygame.K_a]:
+      self.strafe(dt * -1)
+    if keys[pygame.K_d]:
+      self.strafe(dt)
 
     self.out_of_bounds()
 
@@ -108,6 +113,10 @@ class Player(CircleShape):
 
   def move(self, dt):
     forward = pygame.Vector2(0, -1).rotate(self.rotation)
+    self.position += forward * PLAYER_SPEED * dt
+  
+  def strafe(self, dt):
+    forward = pygame.Vector2(0, -1).rotate(self.rotation + 90)
     self.position += forward * PLAYER_SPEED * dt
 
   def shoot(self):
