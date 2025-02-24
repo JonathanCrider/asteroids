@@ -14,11 +14,18 @@ class Asteroid(CircleShape):
   
   def draw(self, screen, color = 'white'):
     width = 2
-    # pygame.draw.circle(screen, color, self.position, self.radius, width)
-    # points = self.polygon_points()
     points = self.n_gon()
     pygame.draw.polygon(screen, color, points, width)
 
+  def n_gon(self):
+    n, r = self.num_sides, self.radius
+    x, y = self.position
+    return [
+        (round(x + r * math.cos(2 * math.pi * i / n + math.radians(self.rotation_angle))),
+         round(y + r * math.sin(2 * math.pi * i / n + math.radians(self.rotation_angle))))
+        for i in range(n)
+    ]
+  
   def polygon_points(self):
     center = self.position
     points = []
@@ -28,16 +35,8 @@ class Asteroid(CircleShape):
       y = center[1] + self.radius * math.sin(angle)
       points.append((x, y))
     return points
-  
-  def n_gon(self):
-    n, r = self.num_sides, self.radius
-    x, y = self.position
-    return [
-        (x + r * math.cos(2 * math.pi * i / n + math.radians(self.rotation_angle)), y + r * math.sin(2 * math.pi * i / n + math.radians(self.rotation_angle)))
-        for i in range(n)
-    ]
 
-  def update(self, dt):
+  def update(self, dt, target):
     self.position += self.velocity * dt
     self.rotation_angle = (self.rotation_angle + self.rotation_speed * dt) % 360
 

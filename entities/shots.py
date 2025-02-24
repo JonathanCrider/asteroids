@@ -13,5 +13,5 @@ class Shot(CircleShape):
     [x, y] = self.position
     pygame.gfxdraw.filled_circle(screen, int(x), int(y), self.radius, self.color)
 
-  def update(self, dt):
+  def update(self, dt, target):
     self.position += self.velocity * dt

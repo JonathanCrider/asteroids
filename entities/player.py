@@ -4,6 +4,7 @@ from entities.circleshape import CircleShape
 from entities.shots import Shot
 from constants import *
 from fields.asteroidfield import AsteroidField
+import os
 
 
 class Player(CircleShape):
@@ -22,7 +23,8 @@ class Player(CircleShape):
 
   def make_ship(self, color = (112, 40, 255), level = 1):
     [x, y] = self.position
-    original_image = pygame.image.load(f"assets/ship-level-{level}.png").convert_alpha()
+    original_image_path = os.path.join(os.path.dirname(__file__), "../assets", f"ship-level-{level}.png")
+    original_image = pygame.image.load(original_image_path).convert_alpha()
     max_dimension = max(original_image.get_width(), original_image.get_height())
     scale = (2 * PLAYER_RADIUS + 2 ) / max_dimension
     image_size = (int(original_image.get_width() * scale), int(original_image.get_height() * scale))
@@ -69,7 +71,7 @@ class Player(CircleShape):
   def rotate(self, dt):
     self.rotation += PLAYER_TURN_SPEED * dt
 
-  def update(self, dt):
+  def update(self, dt, target):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
       self.rotate(dt * -1)

@@ -1,6 +1,7 @@
 import pygame
 import pygame.freetype
 import sys
+import os
 import math
 from constants import *
 from entities.player import *
@@ -17,8 +18,13 @@ def main():
   print(f"Screen height: {SCREEN_HEIGHT}")
 
   # Setup
-  screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-  bg = pygame.image.load("assets/bg.jpg").convert()
+
+  if __name__ == "__main__":
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+  else:
+    screen = pygame.display.get_surface()
+  bg_path = os.path.join(os.path.dirname(__file__), "assets", "bg.jpg")
+  bg = pygame.image.load(bg_path).convert()
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
   dt = 0
@@ -77,10 +83,7 @@ def main():
             game_over(screen, bg, player.score, player.num_shots)
 
     for asset in updatable:
-      if type(asset) == Boss:
-        asset.targeting(dt, player)
-      else:
-        asset.update(dt)
+      asset.update(dt, player)
     for asteroid in asteroids:
       for shot in shots:
         if asteroid.collision(shot):
@@ -92,9 +95,10 @@ def main():
         if asteroid.collision(player):
           game_over(screen, bg, player.score, player.num_shots)
     for asset in drawable:
+      asset.draw(screen)
       if asset.remove_if_offscreen and asset.is_offscreen():
         asset.kill()
-      asset.draw(screen)
+        
 
     score_display(screen, player.score, player.num_shots)
     pygame.display.flip()

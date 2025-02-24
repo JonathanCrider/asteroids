@@ -10,6 +10,7 @@ class Boss(CircleShape):
     super().__init__(x, y, radius)
     self.rotation_angle = 0
     self.rotation_speed = random.uniform(-30, 30)
+    self.remove_if_offscreen = False
     self.num_sides = 12
     self.level = level
     self.health = health
@@ -27,8 +28,8 @@ class Boss(CircleShape):
         for i in range(n)
     ]
 
-  def update(self, dt, other):
-    direction = (other.position - self.position).normalize()
+  def update(self, dt, target):
+    direction = (target.position - self.position).normalize()
     self.position += direction * dt * BOSS_SPEED[self.level]
     self.rotation_angle = (self.rotation_angle + self.rotation_speed * dt) % 360
     self.out_of_bounds()
@@ -61,5 +62,3 @@ class Boss(CircleShape):
     a2.velocity = self.velocity.rotate(-angle) * 1.2
     a2.rotation_speed *= random.randint(4, 8)
 
-  def targeting(self, dt, other):
-    self.update(dt, other)

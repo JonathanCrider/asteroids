@@ -38,7 +38,7 @@ class BossField(pygame.sprite.Sprite):
         boss = Boss(position.x, position.y, radius, health)
         boss.velocity = velocity
 
-    def update(self, dt):
+    def update(self, dt, target):
         if self.boss_count == 0:
             edge = random.choice(self.edges)
             speed = random.randint(40, 100)

@@ -10,7 +10,7 @@ ASTEROID_KINDS = 3
 ASTEROID_SPAWN_RATE = 0.8  # seconds
 ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
 
-# Bosses
+# Bosses (based on level)
 BOSS_RADIUS = [0, 80]
 BOSS_HEALTH = [0, 50]
 BOSS_SPEED = [0, 80]
@@ -27,7 +27,7 @@ SHOT_RADIUS = 5
 
 # Levels (based on score)
 TEST_SCORE_MODIFIER = 1
-SCORE_LEVELS = [-inf, 40, 120, 220, 340, inf]
+SCORE_LEVELS = [-inf, 40, 100, 180, 280, inf]
 
 # Colors
 RED = (255, 0, 0)

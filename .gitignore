@@ -1,6 +1,7 @@
 # Local Dev
 venv/
 __pycache__/
+pygameinfo.py
 
 # Local Build
 dist/

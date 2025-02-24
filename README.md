@@ -16,7 +16,7 @@ Project manager kept giving me sticky notes with update requests so I forced him
 - End screen loop that allows game replay without restarting the script
 - Added launcher window with start button
 - Fixed Overflow Error: previously, offscreen entities weren't removed and kept updating until overflow
-- Added boss level that appears based on player level, including a character chase mechanic
+- Added boss level that appears based on player level, including a character chase mechanic and health-based visuals
 - \[WIP\] Packaged executable: No more command line launching! (MacOS first, Windows support planned)
 
 ## Local Usage
@@ -76,13 +76,13 @@ python --version
 You can run the game directly if you want, or you can use the launcher.
 
 ```bash
-python3 main.py
+python main.py
 ```
 
 -- OR --
 
 ```bash
-python3 launcher.py
+python launcher.py
 ```
 
 ### Controls

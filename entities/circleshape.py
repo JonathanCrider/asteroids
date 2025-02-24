@@ -17,13 +17,13 @@ class CircleShape(pygame.sprite.Sprite):
   def draw(self, screen):
     pass
 
-  def update(self, dt):
+  def update(self, dt, target):
     pass
 
   def collision(self, other):
     return self.position.distance_to(other.position) <= self.radius + other.radius
   
   def is_offscreen(self, screen_width = SCREEN_WIDTH, screen_height = SCREEN_HEIGHT):
-    offset = 100
+    offset = max(100, self.radius)
     x, y = self.position
     return x < -offset or x > screen_width + offset or y < -offset or y > screen_height + offset
