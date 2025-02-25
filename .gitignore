@@ -5,6 +5,7 @@ pygameinfo.py
 
 # Local Build
 dist/
-build/
+build*
+run*
 *.spec
 *.icns

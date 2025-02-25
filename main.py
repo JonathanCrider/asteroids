@@ -12,7 +12,9 @@ from fields.bossfield import BossField
 
 
 def main():
+  print("entering main.py")
   pygame.init()
+  print("init success")
   assets_path = os.path.join(os.path.dirname(__file__), "assets")
   shoot_sound = pygame.mixer.Sound(f"{assets_path}/sounds/shoot.mp3")
   death_sound = pygame.mixer.Sound(f"{assets_path}/sounds/death.mp3")

@@ -44,15 +44,23 @@ from main import main
 def resource_path(relative_path):
   if hasattr(sys, "_MEIPASS"):
     # If running as a PyInstaller bundle
-    return os.path.join(sys._MEIPASS, relative_path)
+    resources_dir = os.path.abspath(os.path.join(sys._MEIPASS, "..", "Resources"))
+    return os.path.join(resources_dir, relative_path)
   return os.path.abspath(relative_path)
 
 
 def start_game():
   # Construct full path to main.py in the bundle
   main_script = resource_path("main.py")
-  subprocess.run(["python", main_script])
+  print("running main from ", main_script)
   # This ensures 'main.py' will be executed correctly
+  try:
+        process = subprocess.Popen([sys.executable, main_script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        stdout, stderr = process.communicate()
+        print("STDOUT:", stdout)
+        print("STDERR:", stderr)
+  except Exception as e:
+      print("Error starting game:", e)
 
 
 def quit_launcher():
@@ -68,7 +76,7 @@ root.title("Asteroids")
 root.geometry(f"{SCREEN_WIDTH // 2}x{SCREEN_HEIGHT // 2}")  # Adjust to add space for your buttons and the pygame frame
 
 # Add a welcome/game status label
-game_label = tk.Label(root, text="Asteroids", font=("Arial", 14))
+game_label = tk.Label(root, text="Asteroids Launcher", font=("Arial", 14))
 game_label.pack(pady=10)
 
 # Add a "Start Game" button
