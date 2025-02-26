@@ -7,5 +7,7 @@ pygameinfo.py
 dist/
 build*
 run*
+createdmg*
+makeimages*
 *.spec
 *.icns

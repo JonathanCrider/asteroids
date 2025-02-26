@@ -12,24 +12,40 @@ from fields.bossfield import BossField
 
 
 def main():
+  while True:
+    result = game_loop()
+    if result == "play":
+      continue
+    else:
+      return result
+
+
+def game_loop():
   print("entering main.py")
   pygame.init()
   print("init success")
   assets_path = os.path.join(os.path.dirname(__file__), "assets")
+
+  # Audio Init
   shoot_sound = pygame.mixer.Sound(f"{assets_path}/sounds/shoot.mp3")
   death_sound = pygame.mixer.Sound(f"{assets_path}/sounds/death.mp3")
-
+  asteroid_death = pygame.mixer.Sound(f"{assets_path}/sounds/asteroid_death.mp3")
+  boss_death = pygame.mixer.Sound(f"{assets_path}/sounds/boss_death.mp3")
   start_music(f"{assets_path}/sounds/bg_music.mp3")
-  print("Starting asteroids!")
-  print(f"Screen width: {SCREEN_WIDTH}")
-  print(f"Screen height: {SCREEN_HEIGHT}")
+
 
   # Setup
 
   if __name__ == "__main__":
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    print("Starting asteroids!")
+    print(f"Screen width: {SCREEN_WIDTH}")
+    print(f"Screen height: {SCREEN_HEIGHT}")
   else:
     screen = pygame.display.get_surface()
+    print("Starting asteroids from Launcher!")
+    print(f"Screen width: {SCREEN_WIDTH}")
+    print(f"Screen height: {SCREEN_HEIGHT}")
   bg = pygame.image.load(f"{assets_path}/bg.jpg").convert()
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
@@ -57,14 +73,19 @@ def main():
   AsteroidField()
 
   # Game Loop
+
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-          return
+          return "quit"
+      if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+        pygame.mixer.music.stop()
+        return "menu"
     screen.fill("black")
     screen.blit(bg, (0,0))
     
     # TODO: boss kill, remove boss field, increment player level
+    # BOSS LOOP
     if player.level == 3:
       if len(asteroid_fields) > 0:
         start_music(f"{assets_path}/sounds/boss1_loop.mp3")
@@ -78,6 +99,7 @@ def main():
       for boss in bosses:
         if boss.health == 0:
           boss.kill()
+          pygame.mixer.Sound.play(boss_death).set_volume(0.3)
           player.level_up()
           start_music(f"{assets_path}/sounds/bg_music.mp3")
           break
@@ -88,8 +110,9 @@ def main():
             break
         else:
           if boss.collision(player):
-            game_over(screen, bg, player.score, player.num_shots, death_sound)
-
+            return game_over(screen, bg, player.score, player.num_shots, death_sound)
+    
+    # MAIN GAME LOOP          
     for asset in updatable:
       asset.update(dt, player)
     for asteroid in asteroids:
@@ -97,11 +120,12 @@ def main():
         if asteroid.collision(shot):
           asteroid.split()
           shot.kill()
+          pygame.mixer.Sound.play(asteroid_death).set_volume(0.4)
           player.score += 1
           break
       else:
         if asteroid.collision(player):
-          game_over(screen, bg, player.score, player.num_shots, death_sound)
+          return game_over(screen, bg, player.score, player.num_shots, death_sound)
     for asset in drawable:
       asset.draw(screen)
       if asset.is_offscreen():
@@ -109,7 +133,6 @@ def main():
           asset.execute_wrap_position()
         else:
           asset.kill()
-        
 
     score_display(screen, player.score, player.num_shots)
     pygame.display.flip()
@@ -154,27 +177,27 @@ def score_display(screen, score, num_shots):
   render_text(screen, text_accuracy, "accuracy", "grey")
 
 
-def start_music(path):
+def start_music(path, volume = 0.2, loops = -1):
   pygame.mixer.music.stop()
   pygame.mixer.music.load(path)
-  pygame.mixer.music.set_volume(0.2)
-  pygame.mixer.music.play(-1)
+  pygame.mixer.music.set_volume(volume)
+  pygame.mixer.music.play(loops)
 
 
 def game_over(screen, bg, score, num_shots, death_sound):
   timeclock = pygame.time.Clock()
   dt = 0
-  waiting = True
-  replay = False
+  waiting_loop = True
+  choice = "menu"
 
   pygame.mixer.Sound.play(death_sound).set_volume(0.2)
   pygame.mixer.music.stop()
 
   # Game Over screen loop
-  while waiting:
+  while waiting_loop:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-          waiting = False
+          waiting_loop = False
     
     screen.fill("black")
     screen.blit(bg, (0,0))
@@ -186,19 +209,17 @@ def game_over(screen, bg, score, num_shots, death_sound):
     
     keys = pygame.key.get_pressed()
     if keys[pygame.K_r]:
-      replay = True
-      waiting = False
+      choice = "play"
+      waiting_loop = False
     if keys[pygame.K_ESCAPE]:
-      waiting = False
+      choice = "menu"
+      waiting_loop = False
 
     dt += timeclock.tick(60) / 1000
     if dt > 10:
-      waiting = False
+      waiting_loop = False
   
-  if replay:
-    main()
-  else:
-    sys.exit()
+  return choice
 
 
 if __name__ == "__main__":
