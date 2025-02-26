@@ -50,19 +50,6 @@ On more recent versions of macOS, you may need to approve it from System Setting
    - Now, **right-click** the app and select **Open**.  
    - A new prompt appears, but this time, there's an option to **Open**.
 
-## Play!
-
-### Movement
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>W</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- OR --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>↑</kbd> \
-<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd>
-
-Note: <kbd>A</kbd> and <kbd>D</kbd> are for strafing!
-
-### Firing
-
-<kbd>Space</kbd> -- OR -- <kbd>⏎ Return</kbd> -- OR -- <kbd>⏎ Numpad Enter</kbd>
-
 ## Local Development
 
 ### Prerequisites
