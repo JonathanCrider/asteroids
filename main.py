@@ -21,31 +21,21 @@ def main():
 
 
 def game_loop():
-  print("entering main.py")
   pygame.init()
-  print("init success")
   assets_path = os.path.join(os.path.dirname(__file__), "assets")
+  print("Starting asteroids!")
+  print(f"Screen width: {SCREEN_WIDTH}")
+  print(f"Screen height: {SCREEN_HEIGHT}")
 
-  # Audio Init
+  # Audio
   shoot_sound = pygame.mixer.Sound(f"{assets_path}/sounds/shoot.mp3")
   death_sound = pygame.mixer.Sound(f"{assets_path}/sounds/death.mp3")
   asteroid_death = pygame.mixer.Sound(f"{assets_path}/sounds/asteroid_death.mp3")
   boss_death = pygame.mixer.Sound(f"{assets_path}/sounds/boss_death.mp3")
   start_music(f"{assets_path}/sounds/bg_music.mp3")
 
-
   # Setup
-
-  if __name__ == "__main__":
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    print("Starting asteroids!")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
-  else:
-    screen = pygame.display.get_surface()
-    print("Starting asteroids from Launcher!")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
+  screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   bg = pygame.image.load(f"{assets_path}/bg.jpg").convert()
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
@@ -73,7 +63,6 @@ def game_loop():
   AsteroidField()
 
   # Game Loop
-
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:

@@ -72,8 +72,6 @@ def launcher_menu():
 
 def main_launcher():
     """Handle switching between launcher and game."""
-    
-
     while True:
       choice = launcher_menu()
       if choice == "play":
@@ -84,7 +82,6 @@ def main_launcher():
       else:
         continue
       
-
 
 if __name__ == "__main__":
     main_launcher()
