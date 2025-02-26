@@ -13,3 +13,6 @@ createdmg*
 makeimages*
 *.spec
 *.icns
+
+# to remove previously tracked directories/files:
+# git rm -r --cached <path>
