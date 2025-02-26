@@ -84,7 +84,7 @@ def game_loop():
         if boss.health == 0:
           boss_death.play()
           boss.kill()
-          player.score += 2
+          player.score += 50
           player.level_up()
           clear_bosses(boss_fields, bosses)
           start_music(f"{assets_path}/sounds/bg_music.wav")
