@@ -12,7 +12,8 @@ assets_path = os.path.join(os.path.dirname(__file__), "assets")
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 HOVER_COLOR = (200, 200, 50)
-FONT = pygame.font.Font(None, 48)
+MAIN_FONT_FACE = "menlo"
+FONT = pygame.font.SysFont(MAIN_FONT_FACE, 48)
 
 # Screen Setup
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -44,8 +45,10 @@ def launcher_menu():
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
         # Button Coordinates
-        start_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 50, 200, 50)
-        quit_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 20, 200, 50)
+        BUTTON_WIDTH = 300
+        BUTTON_HEIGHT = 50
+        start_rect = pygame.Rect(SCREEN_WIDTH // 2 - BUTTON_WIDTH // 2, SCREEN_HEIGHT // 2 - 100, BUTTON_WIDTH, BUTTON_HEIGHT)
+        quit_rect = pygame.Rect(SCREEN_WIDTH // 2 - BUTTON_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, BUTTON_WIDTH, BUTTON_HEIGHT)
 
         start_hovered = start_rect.collidepoint(mouse_x, mouse_y)
         quit_hovered = quit_rect.collidepoint(mouse_x, mouse_y)
@@ -53,8 +56,27 @@ def launcher_menu():
         pygame.draw.rect(screen, HOVER_COLOR if start_hovered else WHITE, start_rect, border_radius=10)
         pygame.draw.rect(screen, HOVER_COLOR if quit_hovered else WHITE, quit_rect, border_radius=10)
 
-        draw_text("Start Game", FONT, (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 25)
-        draw_text("Quit", FONT, (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 45)
+        # draw_text("Start Game", FONT, (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 25)
+        # draw_text("Quit", FONT, (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 45)
+        draw_text("Start Game", FONT, (0, 0, 0), SCREEN_WIDTH // 2, start_rect.centery)
+        draw_text("Quit", FONT, (0, 0, 0), SCREEN_WIDTH // 2, quit_rect.centery)
+
+        # Display Controls
+        control_font_face="menlo"
+        # control_font = pygame.freetype.SysFont(control_font_face, size=36)
+        control_font = pygame.font.SysFont(control_font_face, 36)
+        draw_text("Controls:", control_font, YELLOW, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+
+        # ↑ → "\u2191"
+        # ↓ → "\u2193"
+        # ← → "\u2190"
+        # → → "\u2192"
+
+        # \u2191 \u2193 \u2190 \u2192
+        
+        draw_text("Move: W A S D  or  \u2191 \u2193 \u2190 \u2192", control_font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 140)
+        draw_text("Strafe: A / D", control_font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 180)
+        draw_text("Fire: Space  or  Enter", control_font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 220)
 
         pygame.display.flip()
 
