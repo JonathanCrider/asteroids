@@ -73,23 +73,17 @@ def game_loop():
     screen.fill("black")
     screen.blit(bg, (0,0))
     
-    # TODO: boss kill, remove boss field, increment player level
     # BOSS LOOP
     if player.level == 3:
-      if len(asteroid_fields) > 0:
-        start_music(f"{assets_path}/sounds/boss1_loop.mp3")
-        for astroid_field in asteroid_fields:
-          astroid_field.kill()
-        for asteroid in asteroids:
-          asteroid.kill()
+      clear_asteroids(asteroid_fields, asteroids)
       if len(boss_fields) == 0:
-        # TODO: make field to spawn bosses based on player level
-        BossField()
+        init_boss_level(assets_path=assets_path)
       for boss in bosses:
         if boss.health == 0:
           boss.kill()
           pygame.mixer.Sound.play(boss_death).set_volume(0.3)
           player.level_up()
+          clear_bosses(boss_fields, bosses)
           start_music(f"{assets_path}/sounds/bg_music.mp3")
           break
         for shot in shots:
@@ -171,6 +165,27 @@ def start_music(path, volume = 0.2, loops = -1):
   pygame.mixer.music.load(path)
   pygame.mixer.music.set_volume(volume)
   pygame.mixer.music.play(loops)
+
+
+def init_boss_level(assets_path, boss_level = 1):
+  start_music(f"{assets_path}/sounds/boss1_loop.mp3")
+  BossField(boss_level)
+
+
+def clear_bosses(boss_fields, bosses):
+  # if len(boss_fields) > 0:
+  for boss_field in boss_fields:
+    boss_field.kill()
+  for boss in bosses:
+    boss.kill()
+
+
+def clear_asteroids(asteroid_fields, asteroids):
+  # if len(asteroid_fields) > 0:
+  for astroid_field in asteroid_fields:
+    astroid_field.kill()
+  for asteroid in asteroids:
+    asteroid.kill()
 
 
 def game_over(screen, bg, score, num_shots, death_sound):

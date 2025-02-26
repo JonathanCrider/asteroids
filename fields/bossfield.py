@@ -1,10 +1,11 @@
 import pygame
 import random
+from fields.asteroidfield import AsteroidField
 from entities.boss import Boss
 from constants import *
 
-# TODO: DRY | Create parent field class for both boss and asteroid fields
-class BossField(pygame.sprite.Sprite):
+
+class BossField(AsteroidField):
     edges = [
         [
             pygame.Vector2(1, 0),
@@ -30,7 +31,6 @@ class BossField(pygame.sprite.Sprite):
 
     def __init__(self, boss_level = 1):
         pygame.sprite.Sprite.__init__(self, self.containers)
-        self.spawn_timer = 0.0
         self.boss_level = boss_level
         self.boss_count = 0
         
