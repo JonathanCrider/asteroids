@@ -12,7 +12,7 @@ class CircleShape(pygame.sprite.Sprite):
     self.position = pygame.Vector2(x, y)
     self.velocity = pygame.Vector2(0, 0)
     self.radius = radius
-    self.wrap_position = False
+    self.wrapping_enabled = False
 
   def draw(self, screen):
     pass
@@ -28,7 +28,7 @@ class CircleShape(pygame.sprite.Sprite):
     x, y = self.position
     return x < -offset or x > screen_width + offset or y < -offset or y > screen_height + offset
 
-  def execute_wrap_position(self):
+  def wrap_position(self):
     [x, y] = self.position
     if x < 0:
       self.position = pygame.Vector2(SCREEN_WIDTH + self.radius, y)

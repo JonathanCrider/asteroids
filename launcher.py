@@ -20,7 +20,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Asteroids")
 
 # Load Background
-bg = pygame.image.load(f"{assets_path}/bg.jpg").convert()
+bg = pygame.image.load(f"{assets_path}/images/bg.jpg").convert()
 bg.set_alpha(120)
 
 

@@ -14,7 +14,7 @@ class Player(CircleShape):
     self.cooldown = 0
     self.score = 0
     self.num_shots = 0
-    self.wrap_position = True
+    self.wrapping_enabled = True
     self.level = 1
     self.shoot_sound = shoot_sound
 
@@ -23,7 +23,7 @@ class Player(CircleShape):
 
   def make_ship(self, color = (112, 40, 255), level = 1):
     [x, y] = self.position
-    original_image_path = os.path.join(os.path.dirname(__file__), "../assets", f"ship-level-{level}.png")
+    original_image_path = os.path.join(os.path.dirname(__file__), "../assets/images", f"ship-level-{level}.png")
     original_image = pygame.image.load(original_image_path).convert_alpha()
     max_dimension = max(original_image.get_width(), original_image.get_height())
     scale = (2 * PLAYER_RADIUS + 2 ) / max_dimension
@@ -41,9 +41,7 @@ class Player(CircleShape):
     c = self.position - forward * self.radius + right
     return [a, b, c]
 
-  def draw(self, screen, color = PURPLE):
-    # a, b, c = self.triangle()
-    # pygame.gfxdraw.filled_polygon(screen, [a, b, c], color)
+  def draw(self, screen):
     rotated_image = pygame.transform.rotate(self.original_image, -self.rotation)
     rotated_rect = rotated_image.get_rect(center=(self.position.x, self.position.y))
     screen.blit(rotated_image, rotated_rect.topleft)
@@ -106,12 +104,12 @@ class Player(CircleShape):
     self.position += forward * PLAYER_SPEED * dt
 
   def shoot(self):
-    
     if self.cooldown > 0:
       return
     
     # Sound
-    pygame.mixer.Sound.play(self.shoot_sound).set_volume(0.1)
+    # pygame.mixer.Sound.play(self.shoot_sound)
+    self.shoot_sound.play()
 
     # Barrel (shot start point)
     [x, y] = self.position

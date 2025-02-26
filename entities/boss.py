@@ -6,13 +6,13 @@ from entities.circleshape import CircleShape
 
 
 class Boss(CircleShape):
-  def __init__(self, x, y, radius, health, level = 1):
+  def __init__(self, x, y, radius, health, boss_level = 1):
     super().__init__(x, y, radius)
     self.rotation_angle = 0
     self.rotation_speed = random.uniform(-30, 30)
-    self.wrap_position = True
+    self.wrapping_enabled = True
     self.num_sides = 12
-    self.level = level
+    self.level = boss_level
     self.health = health
   
   def draw(self, screen, color = 'red'):
@@ -32,33 +32,21 @@ class Boss(CircleShape):
     direction = (target.position - self.position).normalize()
     self.position += direction * dt * BOSS_SPEED[self.level]
     self.rotation_angle = (self.rotation_angle + self.rotation_speed * dt) % 360
-    self.out_of_bounds()
-
-  def out_of_bounds(self):
-    # Movement wrapping when crossing screen bounds
-    [x, y] = self.position
-    if x < 0 - self.radius:
-      self.position = pygame.Vector2(SCREEN_WIDTH, y)
-    if x > SCREEN_WIDTH + self.radius:
-      self.position = pygame.Vector2(0, y)
-    if y < 0 - self.radius:
-      self.position = pygame.Vector2(x, SCREEN_HEIGHT)
-    if y > SCREEN_HEIGHT + self.radius:
-      self.position = pygame.Vector2(x, 0)
   
   def split(self):
+    # Not yet in use
     self.kill()
-    if self.radius <= ASTEROID_MIN_RADIUS:
+    if self.radius <= BOSS_RADIUS[1]:
       return
-    
-    # New Asteroids
-    angle = random.uniform(20, 50)
-    radius = self.radius - ASTEROID_MIN_RADIUS
+    # New Bosses
     [x, y] = self.position
-    a1 = Boss(x, y, radius)
+    new_boss_level = self.level - 1
+    angle = random.uniform(20, 50)
+    radius = BOSS_RADIUS[new_boss_level]
+    a1 = Boss(x, y, radius, BOSS_HEALTH[new_boss_level], boss_level=new_boss_level)
     a1.velocity = self.velocity.rotate(angle) * 1.2
     a1.rotation_speed *= random.randint(4, 8)
-    a2 = Boss(x, y, radius)
+    a2 = Boss(x, y, radius, BOSS_HEALTH[new_boss_level], boss_level=new_boss_level)
     a2.velocity = self.velocity.rotate(-angle) * 1.2
     a2.rotation_speed *= random.randint(4, 8)
-
+    return

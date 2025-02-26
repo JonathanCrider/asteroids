@@ -28,15 +28,17 @@ def game_loop():
   print(f"Screen height: {SCREEN_HEIGHT}")
 
   # Audio
-  shoot_sound = pygame.mixer.Sound(f"{assets_path}/sounds/shoot.mp3")
-  death_sound = pygame.mixer.Sound(f"{assets_path}/sounds/death.mp3")
-  asteroid_death = pygame.mixer.Sound(f"{assets_path}/sounds/asteroid_death.mp3")
-  boss_death = pygame.mixer.Sound(f"{assets_path}/sounds/boss_death.mp3")
-  start_music(f"{assets_path}/sounds/bg_music.mp3")
+  shoot_sound = create_sound_fx(f"{assets_path}/sounds/shoot.wav", 0.1)
+  shot_impact = create_sound_fx(f"{assets_path}/sounds/shot_impact.wav", 0.2)
+  player_death = create_sound_fx(f"{assets_path}/sounds/death.wav", 0.2)
+  asteroid_death = create_sound_fx(f"{assets_path}/sounds/asteroid_death.wav", 0.4)
+  boss_death = create_sound_fx(f"{assets_path}/sounds/boss_death.wav", 0.3)
+  
+  start_music(f"{assets_path}/sounds/bg_music.wav")
 
   # Setup
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-  bg = pygame.image.load(f"{assets_path}/bg.jpg").convert()
+  bg = pygame.image.load(f"{assets_path}/images/bg.jpg").convert()
   bg.set_alpha(120)
   timeclock = pygame.time.Clock()
   dt = 0
@@ -73,27 +75,31 @@ def game_loop():
     screen.fill("black")
     screen.blit(bg, (0,0))
     
-    # BOSS LOOP
+    # BOSS 1 LOOP
     if player.level == 3:
-      clear_asteroids(asteroid_fields, asteroids)
       if len(boss_fields) == 0:
+        clear_asteroids(asteroid_fields, asteroids)
         init_boss_level(assets_path=assets_path)
       for boss in bosses:
         if boss.health == 0:
+          boss_death.play()
           boss.kill()
-          pygame.mixer.Sound.play(boss_death).set_volume(0.3)
+          player.score += 2
           player.level_up()
           clear_bosses(boss_fields, bosses)
-          start_music(f"{assets_path}/sounds/bg_music.mp3")
+          start_music(f"{assets_path}/sounds/bg_music.wav")
           break
         for shot in shots:
           if boss.collision(shot):
+            shot_impact.stop()
             boss.health -= 1
             shot.kill()
+            shot_impact.play()
+            player.num_shots -= 1 # accuracy correction
             break
         else:
           if boss.collision(player):
-            return game_over(screen, bg, player.score, player.num_shots, death_sound)
+            return game_over(screen, bg, player.score, player.num_shots, player_death)
     
     # MAIN GAME LOOP          
     for asset in updatable:
@@ -103,17 +109,17 @@ def game_loop():
         if asteroid.collision(shot):
           asteroid.split()
           shot.kill()
-          pygame.mixer.Sound.play(asteroid_death).set_volume(0.4)
+          asteroid_death.play()
           player.score += 1
           break
       else:
         if asteroid.collision(player):
-          return game_over(screen, bg, player.score, player.num_shots, death_sound)
+          return game_over(screen, bg, player.score, player.num_shots, player_death)
     for asset in drawable:
       asset.draw(screen)
       if asset.is_offscreen():
-        if asset.wrap_position:
-          asset.execute_wrap_position()
+        if asset.wrapping_enabled:
+          asset.wrap_position()
         else:
           asset.kill()
 
@@ -160,6 +166,12 @@ def score_display(screen, score, num_shots):
   render_text(screen, text_accuracy, "accuracy", "grey")
 
 
+def create_sound_fx(path, volume = 0.1):
+  sound = pygame.mixer.Sound(path)
+  sound.set_volume(volume)
+  return sound
+
+
 def start_music(path, volume = 0.2, loops = -1):
   pygame.mixer.music.stop()
   pygame.mixer.music.load(path)
@@ -167,9 +179,9 @@ def start_music(path, volume = 0.2, loops = -1):
   pygame.mixer.music.play(loops)
 
 
-def init_boss_level(assets_path, boss_level = 1):
-  start_music(f"{assets_path}/sounds/boss1_loop.mp3")
-  BossField(boss_level)
+def init_boss_level(assets_path, level = 1):
+  start_music(f"{assets_path}/sounds/boss1_loop.wav")
+  BossField(level)
 
 
 def clear_bosses(boss_fields, bosses):
@@ -188,13 +200,13 @@ def clear_asteroids(asteroid_fields, asteroids):
     asteroid.kill()
 
 
-def game_over(screen, bg, score, num_shots, death_sound):
+def game_over(screen, bg, score, num_shots, player_death):
   timeclock = pygame.time.Clock()
   dt = 0
   waiting_loop = True
   choice = "menu"
 
-  pygame.mixer.Sound.play(death_sound).set_volume(0.2)
+  player_death.play()
   pygame.mixer.music.stop()
 
   # Game Over screen loop

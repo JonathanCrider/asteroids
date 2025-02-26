@@ -11,9 +11,9 @@ ASTEROID_SPAWN_RATE = 0.8  # seconds
 ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
 
 # Bosses (based on level)
-BOSS_RADIUS = [0, 80]
-BOSS_HEALTH = [0, 50]
-BOSS_SPEED = [0, 80]
+BOSS_RADIUS = [40, 80]
+BOSS_HEALTH = [10, 50]
+BOSS_SPEED = [60, 80]
 
 # Player
 PLAYER_RADIUS = 20
@@ -26,7 +26,7 @@ PLAYER_SHOOT_COOLDOWN = 0.3
 SHOT_RADIUS = 5
 
 # Levels (based on score)
-SCORE_THRESHOLD_MODIFIER = 10 # for testing, 1 for production
+SCORE_THRESHOLD_MODIFIER = 1 # for testing, 1 for production
 LEVEL_SCORE_THRESHOLDS = [-inf, 40, 100, 180, 280, inf]
 
 # Colors
