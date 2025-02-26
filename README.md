@@ -17,9 +17,53 @@ Project manager kept giving me sticky notes with update requests so I forced him
 - Added launcher window with start button
 - Fixed Overflow Error: previously, offscreen entities weren't removed and kept updating until overflow
 - Added boss level that appears based on player level, including a character chase mechanic and health-based visuals
-- \[WIP\] Packaged executable: No more command line launching! (MacOS first, Windows support planned)
+- Packaged executable: No more command line launching! (see below)
+  - *macOS only, Windows support planned*
 
-## Local Usage
+## Install
+
+macOS only: [click here to download](https://drive.google.com/file/d/14ZQ4nNw7SEzKzvQYVxIkAf4-Dy6XBFOd) the `.dmg`, then drag/drop the file into your Applications folder.
+
+It's not signed, so you will need to do the following to open it on your machine:
+
+### Option A
+
+1. Right-click the app → Open.
+2. macOS will show a warning, but this time it will allow you to click Open.
+
+### Option B
+
+On more recent versions of macOS, you may need to approve it from System Settings -> Privacy & Security:
+
+1. **Try opening the app**  
+   - Double-click the `Asteroids.app` inside the `Asteroids-Launcher.dmg`.  
+   - If macOS blocks it with the error, **close the message**.
+
+2. **Go to System Settings → Privacy & Security**  
+   - Click **Apple Menu**  → **System Settings** → **Privacy & Security**.  
+   - Scroll down to the **Security** section.
+
+3. **Find the blocked app**  
+   - Under `"App was blocked from use because it is not from an identified developer"`, click **"Allow Anyway"**.
+
+4. **Open the app again**  
+   - Now, **right-click** the app and select **Open**.  
+   - A new prompt appears, but this time, there's an option to **Open**.
+
+## Play!
+
+### Movement
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>W</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- OR --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>↑</kbd> \
+<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd>
+
+Note: <kbd>A</kbd> and <kbd>D</kbd> are for strafing!
+
+### Firing
+
+<kbd>Space</kbd> -- OR -- <kbd>⏎ Return</kbd> -- OR -- <kbd>⏎ Numpad Enter</kbd>
+
+## Local Development
 
 ### Prerequisites
 
@@ -71,27 +115,10 @@ python --version
    pip install -r requirements.txt
    ```
 
-### Play!
+### Running Locally
 
-You can run the game directly if you want, or you can use the launcher.
-
-```bash
-python main.py
-```
-
--- OR --
+Navigate to the root directory and run the following command:
 
 ```bash
 python launcher.py
 ```
-
-### Controls
-
-Movement:
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>W</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- OR --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>↑</kbd> \
-<kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd>
-
-Fire shot:
-
-<kbd>Space</kbd> -- OR -- <kbd>⏎ Return</kbd> -- OR -- <kbd>⏎ Numpad Enter</kbd>
