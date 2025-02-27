@@ -8,7 +8,7 @@ import os
 
 
 class Player(CircleShape):
-  def __init__(self, x, y, shoot_sound):
+  def __init__(self, x, y, shoot_sound, level_up_sound):
     super().__init__(x, y, PLAYER_RADIUS)
     self.rotation = 0
     self.cooldown = 0
@@ -17,6 +17,7 @@ class Player(CircleShape):
     self.wrapping_enabled = True
     self.level = 1
     self.shoot_sound = shoot_sound
+    self.level_up_sound = level_up_sound
 
     # Graphic
     self.make_ship()
@@ -108,7 +109,8 @@ class Player(CircleShape):
       return
     
     # Sound
-    # pygame.mixer.Sound.play(self.shoot_sound)
+    # kill it first for fast firing
+    self.shoot_sound.stop()
     self.shoot_sound.play()
 
     # Barrel (shot start point)
@@ -162,15 +164,17 @@ class Player(CircleShape):
   def level_up(self):
     self.level += 1
     if self.level == 2:
+      self.level_up_sound.play()
       self.make_ship(BLUE)
       AsteroidField()
     if self.level == 3:
-      print("boss 1")
-      # All asteroidFields destroyed
+      print("boss 1 initiated")
     if self.level == 4:
+      self.level_up_sound.play()
       self.make_ship(GREEN, self.level)
       AsteroidField()
     if self.level == 5:
+      self.level_up_sound.play()
       self.make_ship(PINK, 4)
       AsteroidField()
       AsteroidField()

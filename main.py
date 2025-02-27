@@ -33,6 +33,8 @@ def game_loop():
   player_death = create_sound_fx(f"{assets_path}/sounds/death.wav", 0.2)
   asteroid_death = create_sound_fx(f"{assets_path}/sounds/asteroid_death.wav", 0.4)
   boss_death = create_sound_fx(f"{assets_path}/sounds/boss_death.wav", 0.3)
+  level_up_sound = create_sound_fx(f"{assets_path}/sounds/level_up.wav", 0.2)
+  level_win = create_sound_fx(f"{assets_path}/sounds/level_win.wav", 0.8)
   
   start_music(f"{assets_path}/sounds/bg_music.wav")
 
@@ -61,7 +63,7 @@ def game_loop():
   Shot.containers = (shots, updatable, drawable)
 
   # Initialize Entities
-  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, shoot_sound)
+  player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, shoot_sound, level_up_sound)
   AsteroidField()
 
   # Game Loop
@@ -84,9 +86,8 @@ def game_loop():
         if boss.health == 0:
           boss_death.play()
           boss.kill()
-          player.score += 50
-          player.level_up()
-          clear_bosses(boss_fields, bosses)
+          player.score += 80 // SCORE_THRESHOLD_MODIFIER
+          clear_bosses(boss_fields, bosses, level_win)
           start_music(f"{assets_path}/sounds/bg_music.wav")
           break
         for shot in shots:
@@ -184,8 +185,10 @@ def init_boss_level(assets_path, level = 1):
   BossField(level)
 
 
-def clear_bosses(boss_fields, bosses):
+def clear_bosses(boss_fields, bosses, level_win):
   # if len(boss_fields) > 0:
+  pygame.mixer.music.stop()
+  level_win.play()
   for boss_field in boss_fields:
     boss_field.kill()
   for boss in bosses:
