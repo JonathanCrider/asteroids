@@ -4,6 +4,7 @@ import sys
 import os
 import math
 from constants import *
+from config import config
 from entities.player import *
 from entities.asteroid import Asteroid
 from fields.asteroidfield import AsteroidField
@@ -86,7 +87,7 @@ def game_loop():
         if boss.health == 0:
           boss_death.play()
           boss.kill()
-          player.score += 80 // SCORE_THRESHOLD_MODIFIER
+          player.score += 80 // config.SCORE_THRESHOLD_MODIFIER
           clear_bosses(boss_fields, bosses, level_win)
           start_music(f"{assets_path}/sounds/bg_music.wav")
           break

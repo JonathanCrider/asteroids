@@ -3,6 +3,7 @@ import pygame.gfxdraw
 from entities.circleshape import CircleShape
 from entities.shots import Shot
 from constants import *
+from config import config
 from fields.asteroidfield import AsteroidField
 import os
 
@@ -93,7 +94,7 @@ class Player(CircleShape):
       self.cooldown -= dt
 
     # Level Up
-    if self.score == LEVEL_SCORE_THRESHOLDS[self.level] // SCORE_THRESHOLD_MODIFIER:
+    if self.score == LEVEL_SCORE_THRESHOLDS[self.level] // config.SCORE_THRESHOLD_MODIFIER:
       self.level_up()
 
   def move(self, dt):

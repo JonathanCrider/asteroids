@@ -1,9 +1,5 @@
 from math import inf
 
-TEST = "test"
-PROD = "production"
-ENV = PROD
-
 # Base Screen Size
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -30,7 +26,6 @@ PLAYER_SHOOT_COOLDOWN = 0.3
 SHOT_RADIUS = 5
 
 # Levels (based on score)
-SCORE_THRESHOLD_MODIFIER = 1 if ENV == PROD else 10
 LEVEL_SCORE_THRESHOLDS = [-inf, 40, 100, 180, 280, inf]
 
 # Colors
