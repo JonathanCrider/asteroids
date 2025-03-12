@@ -2,21 +2,37 @@
 
 Asteroids-inspired game built with Pygame, demonstrating OOP principles and basic game mechanics. Based on the guided project by [Boot.Dev](https://www.boot.dev/).
 
-Project manager kept giving me sticky notes with update requests so I forced him to create his own GitHub and submit issues there instead. (Kids can be tyrants)
+My project manager (age 7) kept giving me sticky notes with update requests so I forced him to create his own GitHub and submit issues there instead.
 
 ## Enhancements
 
-- Enhanced background...should look like you're in space, right? Also displays your current score
-- Player enhancements and upgrades:
-  - added wrapping so you don't drift into the void
-  - enhanced control surface options for easier movement
-  - upgraded ship visuals from basic triangle to level-based image overlay
-  - introduced leveling system to enhance visuals and weapon (shots) based on score
-- Asteroid visual upgrades: now spinning, randomly shaped polygons instead of basic circles
-- End screen loop that allows game replay without restarting the script
-- Added launcher window with start button
-- Fixed Overflow Error: previously, offscreen entities weren't removed and kept updating until overflow
+The base project is a great start, but very simple. I've added several of my own enhancements.
+
+### UI/UX
+
+- Enhanced background...should look like you're in space, right? Also displays your current score and accuracy
+- Asteroid visuals, upgraded simple circle to a random polygon with rotation
+- Player graphical image overlay
+- Added additional control options, including strafing
+- End screen loop that allows game replay without restarting the game
+- Added launcher window with start and quit buttons
+  - Now includes semi-hidden test button, so you can traverse the level quickly to see all the improvements
+- Sounds!
+
+### Logic
+
+- Player location wrapping, so you don't drift into the void
+- Player leveling, based on your score. Includes visual updates and weapon upgrades
 - Added boss level that appears based on player level, including a character chase mechanic and health-based visuals
+- Global config to enable test leveling without modifying code
+
+### Bug Fixes
+
+- Fixed Overflow Error: previously, offscreen entities weren't removed and kept updating until overflow error crashed the game
+- TODO: Random line flashes. Probably a rounding/draw error somewhere
+
+### Installable
+
 - Packaged executable: No more command line launching! (see below)
   - *macOS only, Windows support planned*
 
@@ -24,16 +40,9 @@ Project manager kept giving me sticky notes with update requests so I forced him
 
 macOS only: [click here to download](https://drive.google.com/file/d/14ZQ4nNw7SEzKzvQYVxIkAf4-Dy6XBFOd) the `.dmg`, then drag/drop the file into your Applications folder.
 
-It's not signed, so you will need to do the following to open it on your machine:
+It's not signed, so you will need to allow MacOS to bypass some of the security warnings.
 
-### Option A
-
-1. Right-click the app → Open.
-2. macOS will show a warning, but this time it will allow you to click Open.
-
-### Option B
-
-On more recent versions of macOS, you may need to approve it from System Settings -> Privacy & Security:
+As always, please use caution and common sense when installing unknown applications on your machine.
 
 1. **Try opening the app**  
    - Double-click the `Asteroids.app` inside the `Asteroids-Launcher.dmg`.  
@@ -45,6 +54,7 @@ On more recent versions of macOS, you may need to approve it from System Setting
 
 3. **Find the blocked app**  
    - Under `"App was blocked from use because it is not from an identified developer"`, click **"Allow Anyway"**.
+   - If you don't find this option, you probably have an older version of MacOS, so step 4 should work without this.
 
 4. **Open the app again**  
    - Now, **right-click** the app and select **Open**.  
