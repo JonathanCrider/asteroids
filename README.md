@@ -4,9 +4,9 @@ Asteroids-inspired game built with Pygame, demonstrating OOP principles and basi
 
 My project manager kept giving me sticky notes with update requests so I forced him to create his own GitHub and submit issues there instead. Kids can be demanding sometimes :)
 
-## Enhancements
+## Enhancements, Upgrades, and Modifications
 
-The base project is a great start, but very simple. I've added several of my own enhancements.
+The base project is a great start, but I wanted to extend the basic visuals and game mechanics to practice more OOP principles and see what I could come up with.
 
 ### UI/UX
 
@@ -15,9 +15,10 @@ The base project is a great start, but very simple. I've added several of my own
 - Player graphical image overlay
 - Added additional control options, including strafing
 - End screen loop that allows game replay without restarting the game
+- Sounds!
 - Added launcher window with start and quit buttons
   - Now includes semi-hidden test button, so you can traverse the level quickly to see all the improvements
-- Sounds!
+  - Also includes a semi-hidden option to try the original base game. Note, there is no exit and dying quits the application.
 
 ### Logic
 
@@ -39,7 +40,7 @@ The base project is a great start, but very simple. I've added several of my own
 - Packaged executable: No more command line launching! (see below)
   - *macOS only, Windows support planned*
 
-## Install
+## Installation
 
 macOS only: [click here to download](https://drive.google.com/file/d/14ZQ4nNw7SEzKzvQYVxIkAf4-Dy6XBFOd) the `.dmg`, then drag/drop the file into your Applications folder.
 
