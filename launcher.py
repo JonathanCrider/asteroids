@@ -4,6 +4,7 @@ import os
 from config import config
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from main import main
+from base_asteroids.base_main import base_main
 
 # Initialize pygame
 pygame.init()
@@ -62,18 +63,22 @@ def launcher_menu():
     start_rect = pygame.Rect(SCREEN_WIDTH // 2 - BUTTON_WIDTH // 2, SCREEN_HEIGHT // 2 - 100, BUTTON_WIDTH, BUTTON_HEIGHT)
     quit_rect = pygame.Rect(SCREEN_WIDTH // 2 - BUTTON_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, BUTTON_WIDTH, BUTTON_HEIGHT)
     test_rect = pygame.Rect(SCREEN_WIDTH - (BUTTON_WIDTH // 3) - 50, SCREEN_HEIGHT - 50, BUTTON_WIDTH // 3, BUTTON_HEIGHT // 3)
+    base_game_rect = pygame.Rect(SCREEN_WIDTH - (BUTTON_WIDTH // 3) - 50, SCREEN_HEIGHT - 80, BUTTON_WIDTH // 3, BUTTON_HEIGHT // 3)
 
     start_hovered = start_rect.collidepoint(mouse_x, mouse_y)
     quit_hovered = quit_rect.collidepoint(mouse_x, mouse_y)
     test_hovered = test_rect.collidepoint(mouse_x, mouse_y)
+    base_game_hovered = base_game_rect.collidepoint(mouse_x, mouse_y)
 
     pygame.draw.rect(screen, HOVER_COLOR if start_hovered else WHITE, start_rect, border_radius=10)
     pygame.draw.rect(screen, HOVER_COLOR if quit_hovered else WHITE, quit_rect, border_radius=10)
     pygame.draw.rect(screen, HOVER_COLOR if test_hovered else GREY, test_rect, border_radius=10)
+    pygame.draw.rect(screen, HOVER_COLOR if base_game_hovered else GREY, base_game_rect, border_radius=10)
 
     draw_text("Start Game", FONT, BLACK, start_rect.centerx, start_rect.centery)
     draw_text("Quit", FONT, BLACK, quit_rect.centerx, quit_rect.centery)
     draw_text(config.ENV, TEST_FONT, BLACK, test_rect.centerx, test_rect.centery)
+    draw_text("base game", TEST_FONT, BLACK, base_game_rect.centerx, base_game_rect.centery)
 
     # Display Controls
     control_font_face="menlo"
@@ -100,6 +105,8 @@ def launcher_menu():
           return "quit"
         if test_hovered:
           toggle_env()
+        if base_game_hovered:
+          return "base"
 
     clock.tick(30)
 
@@ -110,6 +117,8 @@ def main_launcher():
     choice = launcher_menu()
     if choice == "play":
       choice = main()  # Directly launch the game in the same window
+    if choice == "base":
+      choice = base_main()
     if choice == "quit":
       pygame.quit()
       sys.exit()
