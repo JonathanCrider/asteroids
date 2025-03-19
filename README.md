@@ -2,7 +2,7 @@
 
 Asteroids-inspired game built with Pygame, demonstrating OOP principles and basic game mechanics. Based on the guided project by [Boot.Dev](https://www.boot.dev/).
 
-My project manager (age 7) kept giving me sticky notes with update requests so I forced him to create his own GitHub and submit issues there instead.
+My project manager kept giving me sticky notes with update requests so I forced him to create his own GitHub and submit issues there instead. Kids can be demanding sometimes :)
 
 ## Enhancements
 
@@ -24,12 +24,15 @@ The base project is a great start, but very simple. I've added several of my own
 - Player location wrapping, so you don't drift into the void
 - Player leveling, based on your score. Includes visual updates and weapon upgrades
 - Added boss level that appears based on player level, including a character chase mechanic and health-based visuals
-- Global config to enable test leveling without modifying code
+- Global config to enable testing (reduces level/upgrade thresholds) without modifying code
 
 ### Bug Fixes
 
 - Fixed Overflow Error: previously, offscreen entities weren't removed and kept updating until overflow error crashed the game
-- TODO: Random line flashes. Probably a rounding/draw error somewhere
+
+### Known Issues
+
+- Random line flashes. Probably a rounding/draw error somewhere
 
 ### Installable
 
